@@ -8,6 +8,6 @@ terraform {
 }
 
 provider "google" {
-  project = "hr-automation-platform"
+  project = "hr-management-2025"
   region  = "us-central1"
 }
