@@ -8,10 +8,6 @@ steps:
 
   - name: 'hashicorp/terraform'
     entrypoint: 'terraform'
-    args: ['import', 'google_storage_bucket.my_bucket', 'hr-automation-terraform-bucket-001']
-
-  - name: 'hashicorp/terraform'
-    entrypoint: 'terraform'
     args: ['plan']
 
   - name: 'hashicorp/terraform'
