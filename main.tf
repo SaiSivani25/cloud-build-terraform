@@ -1,4 +1,4 @@
 resource "google_storage_bucket" "my_bucket" {
-  name     = "hr-automation-terraform-bucket-001"
+  name     = var.bucket_name
   location = "US"
 }
