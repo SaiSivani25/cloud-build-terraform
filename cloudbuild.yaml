@@ -7,20 +7,30 @@ steps:
     entrypoint: 'terraform'
     args: ['init']
 
-  # Step 2: Create Artifact Registry first
+  # Step 2: Terraform plan for Artifact Registry
+  - name: 'hashicorp/terraform'
+    entrypoint: 'terraform'
+    args: ['plan', '-target=google_artifact_registry_repository.my_repo']
+
+  # Step 3: Terraform apply Artifact Registry only
   - name: 'hashicorp/terraform'
     entrypoint: 'terraform'
     args: ['apply', '-auto-approve', '-target=google_artifact_registry_repository.my_repo']
 
-  # Step 3: Build Docker image
+  # Step 4: Build Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'us-central1-docker.pkg.dev/hr-management-2025/calculator-repo/calculator:latest', '.']
 
-  # Step 4: Push to Artifact Registry
+  # Step 5: Push to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'us-central1-docker.pkg.dev/hr-management-2025/calculator-repo/calculator:latest']
 
-  # Step 5: Terraform apply everything else
+  # Step 6: Terraform plan everything
+  - name: 'hashicorp/terraform'
+    entrypoint: 'terraform'
+    args: ['plan']
+
+  # Step 7: Terraform apply everything
   - name: 'hashicorp/terraform'
     entrypoint: 'terraform'
     args: ['apply', '-auto-approve']
