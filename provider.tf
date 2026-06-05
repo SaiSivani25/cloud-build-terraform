@@ -8,6 +8,6 @@ terraform {
 }
 
 provider "google" {
-  project = "hr-management-2025"
-  region  = "us-central1"
+  project = var.project_id
+  region  = var.region
 }
