@@ -2,17 +2,18 @@ options:
   logging: CLOUD_LOGGING_ONLY
 
 steps:
-  # Step 1: Initialize Terraform
   - name: 'hashicorp/terraform'
     entrypoint: 'terraform'
     args: ['init']
 
-  # Step 2: Plan what will be created
+  - name: 'hashicorp/terraform'
+    entrypoint: 'terraform'
+    args: ['import', 'google_storage_bucket.my_bucket', 'hr-automation-terraform-bucket-001']
+
   - name: 'hashicorp/terraform'
     entrypoint: 'terraform'
     args: ['plan']
 
-  # Step 3: Apply - create the resources
   - name: 'hashicorp/terraform'
     entrypoint: 'terraform'
     args: ['apply', '-auto-approve']
