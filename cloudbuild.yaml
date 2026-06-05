@@ -2,25 +2,25 @@ options:
   logging: CLOUD_LOGGING_ONLY
 
 steps:
-  # Step 1: Build Docker image
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/hr-management-2025/calculator-repo/calculator:latest', '.']
-
-  # Step 2: Push to Artifact Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/hr-management-2025/calculator-repo/calculator:latest']
-
-  # Step 3: Terraform init
+  # Step 1: Terraform init
   - name: 'hashicorp/terraform'
     entrypoint: 'terraform'
     args: ['init']
 
-  # Step 4: Terraform plan
+  # Step 2: Create Artifact Registry first
   - name: 'hashicorp/terraform'
     entrypoint: 'terraform'
-    args: ['plan']
+    args: ['apply', '-auto-approve', '-target=google_artifact_registry_repository.my_repo']
 
-  # Step 5: Terraform apply
+  # Step 3: Build Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/hr-management-2025/calculator-repo/calculator:latest', '.']
+
+  # Step 4: Push to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/hr-management-2025/calculator-repo/calculator:latest']
+
+  # Step 5: Terraform apply everything else
   - name: 'hashicorp/terraform'
     entrypoint: 'terraform'
     args: ['apply', '-auto-approve']
