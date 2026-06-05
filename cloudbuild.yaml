@@ -1,0 +1,8 @@
+steps:
+  - name: 'hashicorp/terraform'
+    entrypoint: 'terraform'
+    args: ['init']
+
+  - name: 'hashicorp/terraform'
+    entrypoint: 'terraform'
+    args: ['plan']
